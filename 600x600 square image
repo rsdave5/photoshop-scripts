@@ -1,0 +1,37 @@
+// this code creates a 600x600 dfp, removes the "_" in the filename, and saves it to a folder on your desktop
+
+#target photoshop
+
+// get a reference to the current (active) document and store it in a variable named "doc"
+var doc = app.activeDocument;
+app.preferences.rulerUnits = Units.PIXELS;
+app.activeDocument.changeMode(ChangeMode.RGB); 
+
+// set background color to white and store it in a varaible named "bkgColor"
+var bkgColor = new SolidColor();
+    bkgColor.rgb.red = 255;
+    bkgColor.rgb.green = 255;
+    bkgColor.rgb.blue = 255;
+    backgroundColor = bkgColor; 
+
+// resize canvas to square based on max height or width
+doc.resizeCanvas(Math.max(doc.width,doc.height),Math.max(doc.width,doc.height));
+
+// resize image to 600x600 px
+doc.resizeImage(UnitValue(600,"px"),UnitValue(600,"px"));
+
+// our web export options
+var options = new ExportOptionsSaveForWeb();
+options.format = SaveDocumentType.JPEG;
+options.quality = 100;
+options.optimized = true;
+options.output = false;
+
+// remove underscore
+var newName = doc.name.replace("_.jpg", ".jpg");
+
+// save to folder location
+doc.exportDocument(File("/C/Users/rdave/Desktop/600"+'/'+newName),ExportType.SAVEFORWEB,options);
+
+// close document without saving
+app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
