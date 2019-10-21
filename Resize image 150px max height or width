@@ -1,0 +1,61 @@
+// this code creates a 150px max height or width jpg, and saves it to a folder on your desktop
+
+#target photoshop
+
+// get a reference to the current (active) document and store it in a variable named "doc"
+var doc = app.activeDocument;
+app.preferences.rulerUnits = Units.PIXELS;
+app.activeDocument.changeMode(ChangeMode.RGB); 
+
+if (app.documents.length > 0) {
+
+var myDocument = app.activeDocument;
+
+var originalRulerUnits = preferences.rulerUnits;
+
+preferences.rulerUnits = Units.PIXELS;
+
+// get longer side;
+
+var theFactor = 150 / getTheLonger(Number(myDocument.width), Number(myDocument.height));
+
+// resize;
+
+myDocument.resizeImage (myDocument.width * theFactor, myDocument.height * theFactor, myDocument.resolution, ResampleMethod.BICUBIC);
+
+// reset;
+
+preferences.rulerUnits = originalRulerUnits;
+
+}
+
+else {};
+
+function getTheLonger(a,b) {
+
+          if (a >= b) {
+
+                    var x = a}
+
+          else {
+
+                    var x = b};
+
+          return x;
+
+          };
+
+// our web export options
+var options = new ExportOptionsSaveForWeb();
+options.quality = 100;
+options.format = SaveDocumentType.JPEG;
+options.optimized = true;
+
+// document name
+var newName = doc.name;
+
+// save to folder location
+doc.exportDocument(File("/C/Users/jmcafee/Desktop/150"+'/'+newName),ExportType.SAVEFORWEB,options);
+
+// close document without saving
+app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
